@@ -1,0 +1,28 @@
+:root {
+    --border: 1px solid violet;
+    --cell-size: 40px;
+}
+
+#grid {
+    border: var(--border);
+    box-sizing: content-box;
+    display: flex;
+    flex-wrap: wrap;
+    width: calc(var(--cell-size) * 16);
+}
+
+.cell {
+    background: white;
+    border: var(--border);
+    box-sizing: border-box;
+    height: var(--cell-size);
+    width: var(--cell-size);
+}
+
+.fill {
+    background: orange;
+}
+
+#btn-reset {
+    margin-block-end: 1rem;
+}
