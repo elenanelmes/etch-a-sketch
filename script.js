@@ -23,7 +23,7 @@ function changeCellColour(e) {
 }
 
 function resetGrid() {
-    const cells = 
+    const cells = document.querySelectorAll('.cell');
     cells.forEach(cell => {
         cell.classList.remove('fill');
     });
