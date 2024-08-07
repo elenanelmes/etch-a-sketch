@@ -3,9 +3,22 @@ const inputCells = document.querySelector('#cell-count');
 const checkboxEraser = document.querySelector('#eraser');
 const btnCreate = document.querySelector('#btn-create');
 const btnReset = document.querySelector('#btn-reset');
+const cellBg = document.querySelector('#cell-bg');
+const cellFill = document.querySelector('#cell-fill');
 
 const GRID_SIZE = 800;
-let cellCount = 16;
+
+const defaultCellCount = 16;
+const defaultCellBg = '#ffffff';
+const defaultCellFill = '#000000';
+
+let cellCount = defaultCellCount;
+inputCells.value = cellCount;
+
+cellBg.value = defaultCellBg;
+cellFill.value = defaultCellFill;
+
+const cellBgColour = cellBg.value !== defaultCellBg ? cellBg.value : defaultCellBg;
 
 function createGrid() {
     const CELL_SIZE = GRID_SIZE / cellCount;
@@ -17,7 +30,7 @@ function createGrid() {
         const cell = createElement('div', { 
             id: i,
             class: 'cell',
-            style: `height: ${CELL_SIZE}px; width: ${CELL_SIZE}px`
+            style: `height: ${CELL_SIZE}px; width: ${CELL_SIZE}px; background: ${cellBgColour}`
         });
         cell.addEventListener('mouseover', updateCells);
         grid.appendChild(cell);
@@ -29,7 +42,8 @@ createGrid();
 
 btnCreate.addEventListener('click', createNewGrid);
 btnReset.addEventListener('click', resetGrid);
-checkboxEraser.addEventListener('click', eraseCells);
+cellBg.addEventListener('input', changeCellBg);
+cellFill.addEventListener('input', changeCellFill);
 
 function createNewGrid() {
     const grid = document.querySelector('#grid');
@@ -43,7 +57,11 @@ function resetGrid() {
     const cells = document.querySelectorAll('.cell');
     cells.forEach(cell => {
         if (cell.classList.contains('fill')) cell.classList.remove('fill');
+        cell.style.background = defaultCellBg;
     });
+    inputCells.value = defaultCellCount;
+    cellBg.value = defaultCellBg;
+    cellFill.value = defaultCellFill;
 }
 
 function updateCells(e) {
@@ -52,10 +70,23 @@ function updateCells(e) {
 
 function emptyCells(e) {
     if (e.target.classList.contains('fill')) e.target.classList.remove('fill');
+    e.target.style.background = cellBg.value;
 }
 
 function fillCells(e) {
     if (!e.target.classList.contains('fill')) e.target.classList.add('fill');
+    e.target.style.background = cellFill.value;
+}
+
+function changeCellBg() {
+    const cells = document.querySelectorAll('.cell');
+    cells.forEach(cell => {
+        if (cell.style.background !== cellBg.value && !cell.classList.contains('fill')) cell.style.background = cellBg.value;
+    });
+}
+
+function changeCellFill() {
+    cellFill.value == defaultCellFill ? defaultCellFill : cellFill.value;
 }
 
 function createElement(tag, attributes = {}, textContent = '') {

@@ -1,5 +1,5 @@
 :root {
-    --border: 1px solid violet;
+    --border: 1px solid black;
 }
 
 #grid {
@@ -10,13 +10,8 @@
 }
 
 .cell {
-    background: white;
     border: var(--border);
     box-sizing: border-box;
-}
-
-.fill {
-    background: orange;
 }
 
 #settings {
