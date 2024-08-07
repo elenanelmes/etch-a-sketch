@@ -18,9 +18,9 @@ inputCells.value = cellCount;
 cellBg.value = defaultCellBg;
 cellFill.value = defaultCellFill;
 
-const cellBgColour = cellBg.value !== defaultCellBg ? cellBg.value : defaultCellBg;
 
 function createGrid() {
+    const cellBgColour = cellBg.value !== defaultCellBg ? cellBg.value : defaultCellBg;
     const CELL_SIZE = GRID_SIZE / cellCount;
     const grid = createElement('div', { 
         id: 'grid',
