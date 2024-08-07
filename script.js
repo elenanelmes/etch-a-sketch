@@ -18,6 +18,7 @@ inputCells.value = cellCount;
 cellBg.value = defaultCellBg;
 cellFill.value = defaultCellFill;
 
+let isDrawing = false;
 
 function createGrid() {
     const cellBgColour = cellBg.value !== defaultCellBg ? cellBg.value : defaultCellBg;
@@ -32,11 +33,23 @@ function createGrid() {
             class: 'cell',
             style: `height: ${CELL_SIZE}px; width: ${CELL_SIZE}px; background: ${cellBgColour}`
         });
-        cell.addEventListener('mouseover', updateCells);
+        if (!isDrawing) {
+            cell.addEventListener('mouseenter', e => addHighlight(e));
+            cell.addEventListener('mouseleave', e => removeHighlight(e));
+            cell.addEventListener('click', e => updateCells(e));
+        }
+        cell.addEventListener('mousedown', () => {
+            isDrawing = true;
+        });
+        cell.addEventListener('mousemove', e => {
+            if (isDrawing) updateCells(e);
+        });
         grid.appendChild(cell);
     }
     body.appendChild(grid);
 }
+
+document.addEventListener('mouseup', () => isDrawing = false);
 
 createGrid();
 
@@ -62,6 +75,15 @@ function resetGrid() {
     inputCells.value = defaultCellCount;
     cellBg.value = defaultCellBg;
     cellFill.value = defaultCellFill;
+}
+
+function addHighlight(e) {
+    const highlightValue = `${cellFill.value}30`;
+    if (!e.target.classList.contains('fill')) e.target.style.background = highlightValue;
+}
+
+function removeHighlight(e) {
+    if (!e.target.classList.contains('fill')) e.target.style.background = cellBg.value;
 }
 
 function updateCells(e) {
