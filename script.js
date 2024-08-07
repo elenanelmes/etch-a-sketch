@@ -1,5 +1,6 @@
 const body = document.querySelector('#body');
 const inputCells = document.querySelector('#cell-count');
+const checkboxEraser = document.querySelector('#eraser');
 const btnCreate = document.querySelector('#btn-create');
 const btnReset = document.querySelector('#btn-reset');
 
@@ -18,7 +19,7 @@ function createGrid() {
             class: 'cell',
             style: `height: ${CELL_SIZE}px; width: ${CELL_SIZE}px`
         });
-        cell.addEventListener('mouseover', changeCellColour);
+        cell.addEventListener('mouseover', updateCells);
         grid.appendChild(cell);
     }
     body.appendChild(grid);
@@ -28,6 +29,7 @@ createGrid();
 
 btnCreate.addEventListener('click', createNewGrid);
 btnReset.addEventListener('click', resetGrid);
+checkboxEraser.addEventListener('click', eraseCells);
 
 function createNewGrid() {
     const grid = document.querySelector('#grid');
@@ -40,12 +42,20 @@ function createNewGrid() {
 function resetGrid() {
     const cells = document.querySelectorAll('.cell');
     cells.forEach(cell => {
-        cell.classList.remove('fill');
+        if (cell.classList.contains('fill')) cell.classList.remove('fill');
     });
 }
 
-function changeCellColour(e) {
-    e.target.classList.add('fill');
+function updateCells(e) {
+    checkboxEraser.checked ? eraseCells(e) : fillCells(e);
+}
+
+function eraseCells(e) {
+    if (e.target.classList.contains('fill')) e.target.classList.remove('fill');
+}
+
+function fillCells(e) {
+    if (!e.target.classList.contains('fill')) e.target.classList.add('fill');
 }
 
 function createElement(tag, attributes = {}, textContent = '') {
