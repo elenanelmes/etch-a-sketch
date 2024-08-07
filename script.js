@@ -47,10 +47,10 @@ function resetGrid() {
 }
 
 function updateCells(e) {
-    checkboxEraser.checked ? eraseCells(e) : fillCells(e);
+    checkboxEraser.checked ? emptyCells(e) : fillCells(e);
 }
 
-function eraseCells(e) {
+function emptyCells(e) {
     if (e.target.classList.contains('fill')) e.target.classList.remove('fill');
 }
 
