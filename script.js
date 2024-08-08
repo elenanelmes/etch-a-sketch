@@ -25,17 +25,17 @@ function createGrid() {
     const CELL_SIZE = GRID_SIZE / cellCount;
     const grid = createElement('div', { 
         id: 'grid',
-        style: `height: ${GRID_SIZE}px; width: ${GRID_SIZE}px`
+        style: `height: ${GRID_SIZE}px; width: ${GRID_SIZE}px; background: ${cellBgColour}`
     });
     for (let i = 0; i < cellCount * cellCount; i++) {
         const cell = createElement('div', { 
             id: i,
             class: 'cell',
-            style: `height: ${CELL_SIZE}px; width: ${CELL_SIZE}px; background: ${cellBgColour}`
+            style: `height: ${CELL_SIZE}px; width: ${CELL_SIZE}px; background: transparent`
         });
         if (!isDrawing) {
-            cell.addEventListener('mouseenter', e => addHighlight(e));
-            cell.addEventListener('mouseleave', e => removeHighlight(e));
+            // cell.addEventListener('mouseenter', e => addHighlight(e));
+            // cell.addEventListener('mouseleave', e => removeHighlight(e));
             cell.addEventListener('click', e => updateCells(e));
         }
         cell.addEventListener('mousedown', () => {
@@ -67,24 +67,26 @@ function createNewGrid() {
 }
 
 function resetGrid() {
+    const grid = document.querySelector('#grid');
+    grid.style.background = defaultCellBg;
     const cells = document.querySelectorAll('.cell');
     cells.forEach(cell => {
         if (cell.classList.contains('fill')) cell.classList.remove('fill');
-        cell.style.background = defaultCellBg;
+        cell.style.background = 'transparent';
     });
     inputCells.value = defaultCellCount;
     cellBg.value = defaultCellBg;
     cellFill.value = defaultCellFill;
 }
 
-function addHighlight(e) {
-    const highlightValue = `${cellFill.value}30`;
-    if (!e.target.classList.contains('fill')) e.target.style.background = highlightValue;
-}
+// function addHighlight(e) {
+//     const highlightValue = `${cellFill.value}30`;
+//     if (!e.target.classList.contains('fill')) e.target.style.background = highlightValue;
+// }
 
-function removeHighlight(e) {
-    if (!e.target.classList.contains('fill')) e.target.style.background = cellBg.value;
-}
+// function removeHighlight(e) {
+//     if (!e.target.classList.contains('fill')) e.target.style.background = cellBg.value;
+// }
 
 function updateCells(e) {
     checkboxEraser.checked ? emptyCells(e) : fillCells(e);
@@ -92,7 +94,7 @@ function updateCells(e) {
 
 function emptyCells(e) {
     if (e.target.classList.contains('fill')) e.target.classList.remove('fill');
-    e.target.style.background = cellBg.value;
+    e.target.style.background = 'transparent';
 }
 
 function fillCells(e) {
@@ -101,9 +103,11 @@ function fillCells(e) {
 }
 
 function changeCellBg() {
+    const grid = document.querySelector('#grid');
+    grid.style.background = cellBg.value;
     const cells = document.querySelectorAll('.cell');
     cells.forEach(cell => {
-        if (cell.style.background !== cellBg.value && !cell.classList.contains('fill')) cell.style.background = cellBg.value;
+        if (cell.style.background !== cellBg.value && !cell.classList.contains('fill')) cell.style.background = 'transparent';
     });
 }
 
