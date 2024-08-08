@@ -1,31 +1,29 @@
-const body = document.querySelector('#body');
-const inputCells = document.querySelector('#cell-count');
-const checkboxEraser = document.querySelector('#eraser');
-const btnCreate = document.querySelector('#btn-create');
-const btnReset = document.querySelector('#btn-reset');
-const cellBg = document.querySelector('#cell-bg');
-const cellFill = document.querySelector('#cell-fill');
+const BODY = document.querySelector('#body');
+const CELL_INPUT = document.querySelector('#cells');
+const ERASER_CHECKBOX = document.querySelector('#eraser');
+const CREATE_BUTTON = document.querySelector('#btn-create');
+const RESET_BUTTON = document.querySelector('#btn-reset');
+const GRID_BG = document.querySelector('#grid-bg');
+const FILL = document.querySelector('#fill');
 
 const GRID_SIZE = 800;
+const DEFAULT_CELLS = 16;
+const DEFAULT_GRID_BG = '#ffffff';
+const DEFAULT_FILL = '#000000';
 
-const defaultCellCount = 16;
-const defaultCellBg = '#ffffff';
-const defaultCellFill = '#000000';
-
-let cellCount = defaultCellCount;
-inputCells.value = cellCount;
-
-cellBg.value = defaultCellBg;
-cellFill.value = defaultCellFill;
-
+let cellCount = DEFAULT_CELLS;
 let isDrawing = false;
 
+CELL_INPUT.value = cellCount;
+GRID_BG.value = DEFAULT_GRID_BG;
+FILL.value = DEFAULT_FILL;
+
 function createGrid() {
-    const cellBgColour = cellBg.value !== defaultCellBg ? cellBg.value : defaultCellBg;
+    const GRID_BGColour = GRID_BG.value !== DEFAULT_GRID_BG ? GRID_BG.value : DEFAULT_GRID_BG;
     const CELL_SIZE = GRID_SIZE / cellCount;
     const grid = createElement('div', { 
         id: 'grid',
-        style: `height: ${GRID_SIZE}px; width: ${GRID_SIZE}px; background: ${cellBgColour}`
+        style: `height: ${GRID_SIZE}px; width: ${GRID_SIZE}px; background: ${GRID_BGColour}`
     });
     for (let i = 0; i < cellCount * cellCount; i++) {
         const cell = createElement('div', { 
@@ -33,8 +31,8 @@ function createGrid() {
             class: 'cell',
             style: `height: ${CELL_SIZE}px; width: ${CELL_SIZE}px; background: transparent`
         });
-        cell.addEventListener('mouseenter', e => addHighlight(e));
-        cell.addEventListener('mouseleave', e => removeHighlight(e));
+        cell.addEventListener('mouseenter', e => addHover(e));
+        cell.addEventListener('mouseleave', e => removeHover(e));
         cell.addEventListener('click', e => updateCells(e));
         cell.addEventListener('mousedown', () => {
             isDrawing = true;
@@ -44,53 +42,52 @@ function createGrid() {
         });
         grid.appendChild(cell);
     }
-    body.appendChild(grid);
+    BODY.appendChild(grid);
 }
-
-document.addEventListener('mouseup', () => isDrawing = false);
 
 createGrid();
 
-btnCreate.addEventListener('click', createNewGrid);
-btnReset.addEventListener('click', resetGrid);
-cellBg.addEventListener('input', changeCellBg);
-cellFill.addEventListener('input', changeCellFill);
+document.addEventListener('mouseup', () => isDrawing = false);
+
+CREATE_BUTTON.addEventListener('click', createNewGrid);
+RESET_BUTTON.addEventListener('click', resetGrid);
+GRID_BG.addEventListener('input', changeGridBg);
+FILL.addEventListener('input', changeFill);
 
 function createNewGrid() {
     const grid = document.querySelector('#grid');
     grid.remove();
 
-    cellCount = inputCells.value;
+    cellCount = CELL_INPUT.value;
     createGrid();
 }
 
 function resetGrid() {
     const grid = document.querySelector('#grid');
-    grid.style.background = defaultCellBg;
+    grid.style.background = DEFAULT_GRID_BG;
     const cells = document.querySelectorAll('.cell');
     cells.forEach(cell => {
         if (cell.classList.contains('fill')) cell.classList.remove('fill');
         cell.style.background = 'transparent';
     });
-    inputCells.value = defaultCellCount;
-    cellBg.value = defaultCellBg;
-    cellFill.value = defaultCellFill;
+    CELL_INPUT.value = DEFAULT_CELLS;
+    GRID_BG.value = DEFAULT_GRID_BG;
+    FILL.value = DEFAULT_FILL;
 }
 
-const highlight = createElement('div', { id: 'highlight', style: 'height: 100%; width: 100%; opacity: 0.5; pointer-events: none;' });
-highlight.style.background = cellFill.value;
-highlight.classList.add('highlight');
+const hover = createElement('div', { id: 'hover', style: 'height: 100%; width: 100%; opacity: 0.5; pointer-events: none;' });
+hover.style.background = FILL.value;
 
-function addHighlight(e) {
-    e.target.appendChild(highlight);
+function addHover(e) {
+    e.target.appendChild(hover);
 }
 
-function removeHighlight(e) {
-    e.target.removeChild(highlight);
+function removeHover(e) {
+    e.target.removeChild(hover);
 }
 
 function updateCells(e) {
-    checkboxEraser.checked ? emptyCells(e) : fillCells(e);
+    ERASER_CHECKBOX.checked ? emptyCells(e) : fillCells(e);
 }
 
 function emptyCells(e) {
@@ -100,26 +97,25 @@ function emptyCells(e) {
 
 function fillCells(e) {
     if (!e.target.classList.contains('fill')) e.target.classList.add('fill');
-    e.target.style.background = cellFill.value;
+    e.target.style.background = FILL.value;
 }
 
-function changeCellBg() {
+function changeGridBg() {
     const grid = document.querySelector('#grid');
-    grid.style.background = cellBg.value;
+    grid.style.background = GRID_BG.value;
     const cells = document.querySelectorAll('.cell');
     cells.forEach(cell => {
-        if (cell.style.background !== cellBg.value && !cell.classList.contains('fill')) cell.style.background = 'transparent';
+        if (cell.style.background !== GRID_BG.value && !cell.classList.contains('fill')) cell.style.background = 'transparent';
     });
 }
 
-function changeCellFill() {
-    highlight.style.background = cellFill.value;
-    cellFill.value == defaultCellFill ? defaultCellFill : cellFill.value;
+function changeFill() {
+    hover.style.background = FILL.value;
+    FILL.value == defaultFill ? defaultFill : FILL.value;
 }
 
-function createElement(tag, attributes = {}, textContent = '') {
+function createElement(tag, attributes = {}) {
     const element = document.createElement(tag);
     Object.keys(attributes).forEach(attr => element.setAttribute(attr, attributes[attr]));
-    if (textContent) element.textContent = textContent;
     return element;
 }
