@@ -27,7 +27,7 @@ function initialise() {
     fill.addEventListener('input', changeFill);
     eraserCheckbox.addEventListener('change', changeHoverColour);
     btnCreate.addEventListener('click', createGrid);
-    btnReset.addEventListener('click', resetGrid);
+    btnReset.addEventListener('click', resetAll);
     document.addEventListener('mouseup', () => isDrawing = false);
 
     createGrid();
@@ -52,17 +52,8 @@ function changeFill() {
     hover.style.background = fill.value;
 }
 
-function resetGrid() {
-    const grid = document.querySelector('#grid');
-    grid.style.background = DEFAULT_GRID_BG;
-    const cells = document.querySelectorAll('.cell');
-    cells.forEach(cell => {
-        if (cell.classList.contains('fill')) cell.classList.remove('fill');
-        cell.style.background = 'transparent';
-    });
-    cellInput.value = DEFAULT_CELLS;
-    gridBg.value = DEFAULT_GRID_BG;
-    fill.value = DEFAULT_FILL;
+function resetAll() {
+    window.location.reload();
 }
 
 // Hover Element & Handlers
@@ -98,6 +89,11 @@ function fillCells(e) {
 
 // Utility Functions
 function createGrid() {
+    if (document.querySelector('#grid')) {
+        document.querySelector('#grid').remove();
+        cellCount = cellInput.value;
+    }
+
     const gridBgColour = gridBg.value !== DEFAULT_GRID_BG ? gridBg.value : DEFAULT_GRID_BG;
     const CELL_SIZE = GRID_SIZE / cellCount;
     const grid = createElement('div', { 
