@@ -33,11 +33,9 @@ function createGrid() {
             class: 'cell',
             style: `height: ${CELL_SIZE}px; width: ${CELL_SIZE}px; background: transparent`
         });
-        if (!isDrawing) {
-            // cell.addEventListener('mouseenter', e => addHighlight(e));
-            // cell.addEventListener('mouseleave', e => removeHighlight(e));
-            cell.addEventListener('click', e => updateCells(e));
-        }
+        cell.addEventListener('mouseenter', e => addHighlight(e));
+        cell.addEventListener('mouseleave', e => removeHighlight(e));
+        cell.addEventListener('click', e => updateCells(e));
         cell.addEventListener('mousedown', () => {
             isDrawing = true;
         });
@@ -79,14 +77,17 @@ function resetGrid() {
     cellFill.value = defaultCellFill;
 }
 
-// function addHighlight(e) {
-//     const highlightValue = `${cellFill.value}30`;
-//     if (!e.target.classList.contains('fill')) e.target.style.background = highlightValue;
-// }
+const highlight = createElement('div', { id: 'highlight', style: 'height: 100%; width: 100%; opacity: 0.5; pointer-events: none;' });
+highlight.style.background = cellFill.value;
+highlight.classList.add('highlight');
 
-// function removeHighlight(e) {
-//     if (!e.target.classList.contains('fill')) e.target.style.background = cellBg.value;
-// }
+function addHighlight(e) {
+    e.target.appendChild(highlight);
+}
+
+function removeHighlight(e) {
+    e.target.removeChild(highlight);
+}
 
 function updateCells(e) {
     checkboxEraser.checked ? emptyCells(e) : fillCells(e);
@@ -112,6 +113,7 @@ function changeCellBg() {
 }
 
 function changeCellFill() {
+    highlight.style.background = cellFill.value;
     cellFill.value == defaultCellFill ? defaultCellFill : cellFill.value;
 }
 
