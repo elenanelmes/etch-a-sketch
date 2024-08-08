@@ -1,29 +1,99 @@
-const BODY = document.querySelector('#body');
-const CELL_INPUT = document.querySelector('#cells');
-const ERASER_CHECKBOX = document.querySelector('#eraser');
-const CREATE_BUTTON = document.querySelector('#btn-create');
-const RESET_BUTTON = document.querySelector('#btn-reset');
-const GRID_BG = document.querySelector('#grid-bg');
-const FILL = document.querySelector('#fill');
+// DOM ELements
+const body = document.querySelector('#body');
+const cellInput= document.querySelector('#cells');
+const eraserCheckbox = document.querySelector('#eraser');
+const btnCreate = document.querySelector('#btn-create');
+const btnReset = document.querySelector('#btn-reset');
+const gridBg = document.querySelector('#grid-bg');
+const fill = document.querySelector('#fill');
 
+// Constants
 const GRID_SIZE = 800;
 const DEFAULT_CELLS = 16;
 const DEFAULT_GRID_BG = '#ffffff';
 const DEFAULT_FILL = '#000000';
 
+// Variables
 let cellCount = DEFAULT_CELLS;
 let isDrawing = false;
 
-CELL_INPUT.value = cellCount;
-GRID_BG.value = DEFAULT_GRID_BG;
-FILL.value = DEFAULT_FILL;
+// Initialise
+function initialise() {
+    cellInput.value = cellCount;
+    gridBg.value = DEFAULT_GRID_BG;
+    fill.value = DEFAULT_FILL;
 
+    gridBg.addEventListener('input', changeGridBg);
+    fill.addEventListener('input', changeFill);
+    btnCreate.addEventListener('click', createGrid);
+    btnReset.addEventListener('click', resetGrid);
+    document.addEventListener('mouseup', () => isDrawing = false);
+
+    createGrid();
+}
+
+// Event Handlers
+function changeGridBg() {
+    const grid = document.querySelector('#grid');
+    grid.style.background = gridBg.value;
+    const cells = document.querySelectorAll('.cell');
+    cells.forEach(cell => {
+        if (cell.style.background !== gridBg.value && !cell.classList.contains('fill')) cell.style.background = 'transparent';
+    });
+}
+
+function changeFill() {
+    hover.style.background = fill.value;
+    fill.value == DEFAULT_FILL ? DEFAULT_FILL : fill.value;
+}
+
+function resetGrid() {
+    const grid = document.querySelector('#grid');
+    grid.style.background = DEFAULT_GRID_BG;
+    const cells = document.querySelectorAll('.cell');
+    cells.forEach(cell => {
+        if (cell.classList.contains('fill')) cell.classList.remove('fill');
+        cell.style.background = 'transparent';
+    });
+    cellInput.value = DEFAULT_CELLS;
+    gridBg.value = DEFAULT_GRID_BG;
+    fill.value = DEFAULT_FILL;
+}
+
+// Hover Element & Handlers
+const hover = createElement('div', { id: 'hover', style: 'height: 100%; width: 100%; opacity: 0.5; pointer-events: none;' });
+hover.style.background = fill.value;
+
+function addHover(e) {
+    e.target.appendChild(hover);
+}
+
+function removeHover(e) {
+    e.target.removeChild(hover);
+}
+
+// Cell Update Handlers
+function updateCells(e) {
+    eraserCheckbox.checked ? emptyCells(e) : fillCells(e);
+}
+
+function emptyCells(e) {
+    if (e.target.classList.contains('fill')) e.target.classList.remove('fill');
+    e.target.style.background = 'transparent';
+}
+
+function fillCells(e) {
+    if (!e.target.classList.contains('fill')) e.target.classList.add('fill');
+    e.target.style.background = fill.value;
+}
+
+// Utility Functions
 function createGrid() {
-    const GRID_BGColour = GRID_BG.value !== DEFAULT_GRID_BG ? GRID_BG.value : DEFAULT_GRID_BG;
+    const gridBgColour = gridBg.value !== DEFAULT_GRID_BG ? gridBg.value : DEFAULT_GRID_BG;
     const CELL_SIZE = GRID_SIZE / cellCount;
     const grid = createElement('div', { 
         id: 'grid',
-        style: `height: ${GRID_SIZE}px; width: ${GRID_SIZE}px; background: ${GRID_BGColour}`
+        style: `height: ${GRID_SIZE}px; width: ${GRID_SIZE}px; background: ${gridBgColour}`
     });
     for (let i = 0; i < cellCount * cellCount; i++) {
         const cell = createElement('div', { 
@@ -42,76 +112,7 @@ function createGrid() {
         });
         grid.appendChild(cell);
     }
-    BODY.appendChild(grid);
-}
-
-createGrid();
-
-document.addEventListener('mouseup', () => isDrawing = false);
-
-CREATE_BUTTON.addEventListener('click', createNewGrid);
-RESET_BUTTON.addEventListener('click', resetGrid);
-GRID_BG.addEventListener('input', changeGridBg);
-FILL.addEventListener('input', changeFill);
-
-function createNewGrid() {
-    const grid = document.querySelector('#grid');
-    grid.remove();
-
-    cellCount = CELL_INPUT.value;
-    createGrid();
-}
-
-function resetGrid() {
-    const grid = document.querySelector('#grid');
-    grid.style.background = DEFAULT_GRID_BG;
-    const cells = document.querySelectorAll('.cell');
-    cells.forEach(cell => {
-        if (cell.classList.contains('fill')) cell.classList.remove('fill');
-        cell.style.background = 'transparent';
-    });
-    CELL_INPUT.value = DEFAULT_CELLS;
-    GRID_BG.value = DEFAULT_GRID_BG;
-    FILL.value = DEFAULT_FILL;
-}
-
-const hover = createElement('div', { id: 'hover', style: 'height: 100%; width: 100%; opacity: 0.5; pointer-events: none;' });
-hover.style.background = FILL.value;
-
-function addHover(e) {
-    e.target.appendChild(hover);
-}
-
-function removeHover(e) {
-    e.target.removeChild(hover);
-}
-
-function updateCells(e) {
-    ERASER_CHECKBOX.checked ? emptyCells(e) : fillCells(e);
-}
-
-function emptyCells(e) {
-    if (e.target.classList.contains('fill')) e.target.classList.remove('fill');
-    e.target.style.background = 'transparent';
-}
-
-function fillCells(e) {
-    if (!e.target.classList.contains('fill')) e.target.classList.add('fill');
-    e.target.style.background = FILL.value;
-}
-
-function changeGridBg() {
-    const grid = document.querySelector('#grid');
-    grid.style.background = GRID_BG.value;
-    const cells = document.querySelectorAll('.cell');
-    cells.forEach(cell => {
-        if (cell.style.background !== GRID_BG.value && !cell.classList.contains('fill')) cell.style.background = 'transparent';
-    });
-}
-
-function changeFill() {
-    hover.style.background = FILL.value;
-    FILL.value == defaultFill ? defaultFill : FILL.value;
+    body.appendChild(grid);
 }
 
 function createElement(tag, attributes = {}) {
@@ -119,3 +120,6 @@ function createElement(tag, attributes = {}) {
     Object.keys(attributes).forEach(attr => element.setAttribute(attr, attributes[attr]));
     return element;
 }
+
+// Initialise the application
+initialise();
