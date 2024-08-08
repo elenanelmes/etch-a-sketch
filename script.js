@@ -1,9 +1,9 @@
 // DOM ELements
 const body = document.querySelector('#body');
-const cellInput= document.querySelector('#cells');
+const slider = document.querySelector('#slider');
+const sliderLabel = document.querySelector('#slider-label');
 const eraserCheckbox = document.querySelector('#eraser');
-const btnCreate = document.querySelector('#btn-create');
-const btnReset = document.querySelector('#btn-reset');
+const resetBtn = document.querySelector('#btn-reset');
 const gridBg = document.querySelector('#grid-bg');
 const fill = document.querySelector('#fill');
 
@@ -19,15 +19,16 @@ let isDrawing = false;
 
 // Initialise
 function initialise() {
-    cellInput.value = cellCount;
+    slider.value = cellCount;
+    sliderLabel.textContent = `${cellCount} x ${cellCount}`;
     gridBg.value = DEFAULT_GRID_BG;
     fill.value = DEFAULT_FILL;
 
+    slider.addEventListener('input', updateGrid);
     gridBg.addEventListener('input', changeGridBg);
     fill.addEventListener('input', changeFill);
     eraserCheckbox.addEventListener('change', changeHoverColour);
-    btnCreate.addEventListener('click', createGrid);
-    btnReset.addEventListener('click', resetAll);
+    resetBtn.addEventListener('click', resetAll);
     document.addEventListener('mouseup', () => isDrawing = false);
 
     createGrid();
@@ -50,6 +51,12 @@ function changeGridBg() {
 function changeFill() {
     fill.value == DEFAULT_FILL ? DEFAULT_FILL : fill.value;
     hover.style.background = fill.value;
+}
+
+function updateGrid() {
+    cellCount = test.value;
+    testLabel.textContent = `${cellCount} x ${cellCount}`;
+    createGrid();
 }
 
 function resetAll() {
@@ -89,9 +96,9 @@ function fillCells(e) {
 
 // Utility Functions
 function createGrid() {
-    if (document.querySelector('#grid')) {
-        document.querySelector('#grid').remove();
-        cellCount = cellInput.value;
+    const existingGrid = document.querySelector('#grid');
+    if (existingGrid) {
+        existingGrid.remove();
     }
 
     const gridBgColour = gridBg.value !== DEFAULT_GRID_BG ? gridBg.value : DEFAULT_GRID_BG;
