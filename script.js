@@ -25,6 +25,7 @@ function initialise() {
 
     gridBg.addEventListener('input', changeGridBg);
     fill.addEventListener('input', changeFill);
+    eraserCheckbox.addEventListener('change', changeHoverColour);
     btnCreate.addEventListener('click', createGrid);
     btnReset.addEventListener('click', resetGrid);
     document.addEventListener('mouseup', () => isDrawing = false);
@@ -40,11 +41,15 @@ function changeGridBg() {
     cells.forEach(cell => {
         if (cell.style.background !== gridBg.value && !cell.classList.contains('fill')) cell.style.background = 'transparent';
     });
+
+    if (eraserCheckbox.checked) {
+        hover.style.background = gridBg.value;
+    }
 }
 
 function changeFill() {
-    hover.style.background = fill.value;
     fill.value == DEFAULT_FILL ? DEFAULT_FILL : fill.value;
+    hover.style.background = fill.value;
 }
 
 function resetGrid() {
@@ -70,6 +75,10 @@ function addHover(e) {
 
 function removeHover(e) {
     e.target.removeChild(hover);
+}
+
+function changeHoverColour() {
+    hover.style.background = eraserCheckbox.checked ? gridBg.value : fill.value;
 }
 
 // Cell Update Handlers
