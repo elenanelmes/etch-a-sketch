@@ -3,6 +3,7 @@ const body = document.querySelector('#body');
 const slider = document.querySelector('#slider');
 const sliderLabel = document.querySelector('#slider-label');
 const eraserCheckbox = document.querySelector('#eraser');
+const clearBtn = document.querySelector('#btn-clear');
 const resetBtn = document.querySelector('#btn-reset');
 const gridBg = document.querySelector('#grid-bg');
 const fill = document.querySelector('#fill');
@@ -28,6 +29,7 @@ function initialise() {
     gridBg.addEventListener('input', changeGridBg);
     fill.addEventListener('input', changeFill);
     eraserCheckbox.addEventListener('change', changeHoverColour);
+    clearBtn.addEventListener('click', () => clearGrid());
     resetBtn.addEventListener('click', resetAll);
     document.addEventListener('mouseup', () => isDrawing = false);
 
@@ -57,6 +59,14 @@ function updateGrid() {
     cellCount = slider.value;
     sliderLabel.textContent = `${cellCount} x ${cellCount}`;
     createGrid();
+}
+
+function clearGrid() {
+    const cells = document.querySelectorAll('.cell');
+    cells.forEach(cell => {
+        if (cell.classList.contains('fill')) cell.classList.remove('fill');
+        cell.style.background = 'transparent';
+    });
 }
 
 function resetAll() {
