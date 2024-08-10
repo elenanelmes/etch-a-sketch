@@ -54,8 +54,8 @@ function changeFill() {
 }
 
 function updateGrid() {
-    cellCount = test.value;
-    testLabel.textContent = `${cellCount} x ${cellCount}`;
+    cellCount = slider.value;
+    sliderLabel.textContent = `${cellCount} x ${cellCount}`;
     createGrid();
 }
 
