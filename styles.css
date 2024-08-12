@@ -66,6 +66,17 @@ html {
     }
 }
 
+#slider-label {
+    display: flex;
+    flex-direction: row;
+    gap: calc(var(--space) * 0.25);
+
+    .slider-value {
+        width: 2rem;
+        text-align: center;
+    }
+}
+
 #grid {
     border: var(--border-width) var(--border-style) var(--bg-container);
     border-radius: var(--border-radius-xl);

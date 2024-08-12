@@ -22,7 +22,10 @@ let isDrawing = false;
 // Initialise
 function initialise() {
     slider.value = cellCount;
-    sliderLabel.textContent = `${cellCount} x ${cellCount}`;
+    const sliderValues = sliderLabel.querySelectorAll('.slider-value');
+    sliderValues.forEach(sliderValue => {
+        sliderValue.textContent = cellCount;
+    });
     gridBg.value = DEFAULT_GRID_BG;
     fill.value = DEFAULT_FILL;
 
@@ -58,7 +61,10 @@ function changeFill() {
 
 function updateGrid() {
     cellCount = slider.value;
-    sliderLabel.textContent = `${cellCount} x ${cellCount}`;
+    const sliderValues = sliderLabel.querySelectorAll('.slider-value');
+    sliderValues.forEach(sliderValue => {
+        sliderValue.textContent = cellCount;
+    });
     createGrid();
 }
 
