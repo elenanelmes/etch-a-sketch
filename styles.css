@@ -14,7 +14,7 @@
 }
 
 * {
-    box-sizing: content-box;
+    box-sizing: border-box;
     font-family: "Chivo Mono", monospace;
     margin: 0;
     padding: 0;
@@ -55,14 +55,20 @@ html {
     border-radius: var(--border-radius-lg);
     display: flex;
     flex-direction: column;
-    gap: calc(var(--space) * 1);
+    gap: calc(var(--space) * 1.5);
     justify-content: center;
     padding: calc(var(--space) * 2);
-
+    
     .setting {
         align-items: center;
         display: flex;
         gap: calc(var(--space) * 1);
+    }
+    
+    div:last-child {
+        display: inherit;
+        flex-direction: column;
+        gap: inherit;
     }
 }
 
@@ -79,6 +85,7 @@ html {
 
 #grid {
     border: var(--border-width) var(--border-style) var(--bg-container);
+    box-sizing: content-box;
     border-radius: var(--border-radius-xl);
     display: flex;
     flex-wrap: wrap;
@@ -123,7 +130,7 @@ input {
 button {
     border-radius: var(--border-radius-sm);
     font-size: 1rem;
-    padding: calc(var(--space) * 0.5);
+    padding: calc(var(--space) * 0.5) calc(var(--space) * 1);
 }
 
 input[type="color"] {
@@ -135,4 +142,16 @@ input[type="color"] {
     padding-block: 0;
     padding-inline: 0;
     block-size: var(--size);
+}
+
+@media (max-width: 1200px) {
+    #settings {
+        flex-direction: row;
+        flex-wrap: wrap;
+        width: 800px;
+        
+        div:last-child {
+            flex-direction: row;
+        }
+    }
 }
