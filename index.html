@@ -3,22 +3,37 @@
     <head>
         <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Etch-a-Sketch</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Chivo+Mono:wght@100..900&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="styles.css"></link>
         <script src="script.js" defer></script>
     </head>
     <body id="body">
-        <h1>Etch-a-Sketch</h1>
-        <div id="settings">
-            <label id="slider-label" for="slider"></label>
-            <input id="slider" name="slider" type="range" min="2" max="100"></input>            
-            <label for="grid-bg">Background</label>
-            <input id="grid-bg" type="color"></input>
-            <label for="fill">Fill</label>
-            <input id="fill" type="color"></input>
-            <input id="eraser" name="eraser" type="checkbox" value="Eraser"></input>
-            <label for="eraser">Eraser</label>
-            <button id="btn-clear">Clear</button>
-            <button id="btn-reset">Reset All</button>
+        <div id="content">
+            <div id="info">
+                <h1>Etch-a-Sketch</h1>
+                <div id="settings">
+                    <div class="setting">
+                        <input id="slider" name="slider" type="range" min="2" max="100"></input>            
+                        <label id="slider-label" for="slider"></label>
+                    </div>
+                    <div class="setting">
+                        <input id="grid-bg" type="color"></input>
+                        <label for="grid-bg">Background</label>
+                    </div>
+                    <div class="setting">
+                        <input id="fill" type="color"></input>
+                        <label for="fill">Fill</label>
+                    </div>
+                    <div class="setting">
+                        <input id="eraser" name="eraser" type="checkbox" value="Eraser"></input>
+                        <label for="eraser">Eraser</label>
+                    </div>
+                    <button id="btn-clear" class="btn-primary">Clear</button>
+                    <button id="btn-reset" class="btn-secondary">Reset All</button>
+                </div>
+            </div>
         </div>
     </body>
 </html>

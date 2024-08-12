@@ -1,5 +1,6 @@
 // DOM ELements
 const body = document.querySelector('#body');
+const content = document.querySelector('#content');
 const slider = document.querySelector('#slider');
 const sliderLabel = document.querySelector('#slider-label');
 const eraserCheckbox = document.querySelector('#eraser');
@@ -11,8 +12,8 @@ const fill = document.querySelector('#fill');
 // Constants
 const GRID_SIZE = 800;
 const DEFAULT_CELLS = 16;
-const DEFAULT_GRID_BG = '#ffffff';
-const DEFAULT_FILL = '#000000';
+const DEFAULT_GRID_BG = '#f7f0f0';
+const DEFAULT_FILL = '#151315';
 
 // Variables
 let cellCount = DEFAULT_CELLS;
@@ -134,7 +135,7 @@ function createGrid() {
         });
         grid.appendChild(cell);
     }
-    body.appendChild(grid);
+    content.appendChild(grid);
 }
 
 function createElement(tag, attributes = {}) {
