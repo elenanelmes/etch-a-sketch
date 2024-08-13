@@ -1,6 +1,6 @@
 # etch-a-sketch
 
-An online sketcher based on the [Etch-a-Sketch project](https://www.theodinproject.com/lessons/foundations-etch-a-sketch) from the Odin Project, with added functionality.
+An online sketcher based on The Odin Project's [Etch-a-Sketch challenge](https://www.theodinproject.com/lessons/foundations-etch-a-sketch), with added functionality.
 
 - User can resize grid
 - User can choose background colour
